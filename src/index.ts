@@ -172,7 +172,7 @@ async function processFile(env: Env, key: string): Promise<number> {
     let rec: any;
     try { rec = JSON.parse(trimmed); } catch { return; }
 
-    const userId = rec.cf_user_id;
+    const userId = (rec.Cookies && rec.Cookies.cf_user_id) || rec.cf_user_id;
     if (userId === undefined || userId === null || userId === "") return;
     const uid = String(userId);
 
