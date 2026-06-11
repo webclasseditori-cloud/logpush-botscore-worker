@@ -1,0 +1,29 @@
+{
+  "name": "logpush-botscore-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-01",
+
+  "observability": { "enabled": true },
+
+  // R2: bucket_name OMESSO -> il pulsante "Deploy to Cloudflare" auto-provisiona un bucket.
+  // DOPO il deploy ri-punta questo binding al bucket Logpush esistente (Settings -> Bindings).
+  // Per deploy via terminale, aggiungi qui "bucket_name": "<tuo-bucket>".
+  "r2_buckets": [
+    { "binding": "LOGS_BUCKET","bucket_name": "cloudflare-managed-1b69ff89","preview_bucket_name": "cloudflare-managed-1b69ff89" }
+  ],
+
+  // D1: database_id OMESSO -> auto-provisionato dal pulsante Deploy.
+  // Le tabelle si creano da sole (ensureSchema), non serve schema.sql.
+  // Per deploy via terminale, aggiungi "database_id": "<id>" dopo `wrangler d1 create`.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "botscore-db","database_id": "1eaa139b-65b8-42e9-aaff-780518dac775" }
+  ],
+
+  "triggers": { "crons": ["*/5 * * * *"] },
+
+  "vars": {
+    "LOG_PREFIX": "tmt",
+    "MAX_FILES_PER_RUN": "30",
+    "RISK_THRESHOLD": "29"
+  }
+}
