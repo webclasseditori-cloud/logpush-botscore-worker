@@ -125,7 +125,7 @@ async function ensureSchema(env: Env): Promise<void> {
 async function ingest(env: Env): Promise<{ processedFiles: number; processedRows: number }> {
   await ensureSchema(env);
   const maxFiles = parseInt(env.MAX_FILES_PER_RUN || "15", 10) || 15;
-  const prefix = env.LOG_PREFIX || undefined;
+  const prefix = (env.LOG_PREFIX && env.LOG_PREFIX !== "/" && env.LOG_PREFIX !== "*") ? env.LOG_PREFIX : undefined;
 
   const candidates: string[] = [];
   let cursor: string | undefined;
